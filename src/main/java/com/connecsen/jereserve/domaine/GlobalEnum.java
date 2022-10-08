@@ -1,0 +1,22 @@
+package com.connecsen.jereserve.domaine;
+
+public enum  GlobalEnum
+{
+	// PARTENAIRE
+	TRANFUSION_CENTER,
+	HOSPITAL,
+	CLINIQUE,
+	//UTILISATEUR
+	ADMIN,
+	ABONNE ,
+	SUPERADMIN,
+	//TYPE OF DEMAND
+	DONNEUR,
+	RECEVEUR,	
+	COLLECTE,
+	// INFORMATION
+	SENSIBILISATION,
+	
+	
+
+}

@@ -1,0 +1,2 @@
+(this["webpackJsonpje-reserve"]=this["webpackJsonpje-reserve"]||[]).push([[87],{1532:function(e,c,s){"use strict";s.r(c);s(1);var t=s(1122),a=s(3);c.default=function(){return Object(a.jsx)("div",{className:"c-app c-default-layout",children:Object(a.jsxs)("div",{className:"c-wrapper",children:[Object(a.jsx)(t.g,{}),Object(a.jsx)("div",{className:"c-body",children:Object(a.jsx)(t.c,{})}),Object(a.jsx)(t.d,{})]})})}}}]);
+//# sourceMappingURL=87.f5e47652.chunk.js.map
