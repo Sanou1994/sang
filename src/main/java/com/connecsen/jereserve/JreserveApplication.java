@@ -53,7 +53,7 @@ public class JreserveApplication implements CommandLineRunner {
 	 
 	@Override  
 	public void run(String... args) throws Exception {
-	//this.iAccountService.initApp();
+	this.iAccountService.initApp();
 	}
    
 }

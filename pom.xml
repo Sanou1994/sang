@@ -151,7 +151,7 @@
             <outputDirectory>${basedir}/target/classes/static/</outputDirectory>
             <resources>
               <resource>
-                <directory>${basedir}/static</directory>
+                <directory>${basedir}/build</directory>
               </resource>
             </resources>
           </configuration>
