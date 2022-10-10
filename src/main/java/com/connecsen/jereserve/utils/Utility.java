@@ -10,8 +10,8 @@ import net.bytebuddy.utility.RandomString;
 
 public final class Utility {
 	// CONSTANT POUR LA SECURITE
-	public static final long EXPIRATION_TIME =365 * 24 * 60 * 60 ;
-//	public static final long EXPIRATION_TIME =1 * 60 * 60 ; // 1H
+	//public static final long EXPIRATION_TIME =365 * 24 * 60 * 60 ;
+	public static final long EXPIRATION_TIME =1 * 60 * 60 ; // 1H
 
 	public static final String TOKEN_PREFIX = "Bearer ";
 	public static final String HEADER_STRING = "Authorization";
