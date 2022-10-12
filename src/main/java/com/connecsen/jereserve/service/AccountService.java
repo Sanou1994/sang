@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.transaction.Transactional;
 
@@ -335,30 +334,49 @@ public class AccountService implements IAccountService{
 	public Reponse activation(long phone,long code) {
 		// TODO Auto-generated method stub
 		Reponse response = new Reponse();	
-
 		try
-		{
+	   {
 			Code codeSave=codeRepository.findByPhoneAndCodeAndStatus(phone, code, true);
 			if(codeSave.getCodeID() > 0 )
 			{
 				Utilisateur userGot = userRepository.findById(codeSave.getUserID()).get();
-				Demande demande = demandRepository.findById(codeSave.getDemandID()).get();
-				if(userGot != null  && userGot.getId()>0 && demande != null)
+				
+				if(userGot != null  && userGot.getId()>0)
 				{
-					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
-					Date dateFormatter = new Date();					
-                    codeSave.setDate_activation(formatter.format(dateFormatter).toString());	
-                    codeSave.setStatus(false);
-					codeRepository.save(codeSave); 
-					demande.setActivedJob(true);
-					demande.setStatus(true);
-					demandRepository.save(demande);
-					userGot.setMonToken(this.getToken(userGot.getEmail(),Long.toString(phone) ));	
-					userGot.setStatus(true);											
-					Utilisateur userUpdate =userRepository.save(userGot);					
-					response.setCode(200);
-					response.setMessage(Utility.CodeAndMessage().get(200));
-					response.setResult(userUpdate);
+					
+					if(codeSave.getDemandID() >0 )
+					{
+						Demande demande = demandRepository.findById(codeSave.getDemandID()).get();							
+						SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
+						Date dateFormatter = new Date();					
+	                    codeSave.setDate_activation(formatter.format(dateFormatter).toString());	
+	                    codeSave.setStatus(false);
+						codeRepository.save(codeSave); 
+						demande.setActivedJob(true);
+						demande.setStatus(true);
+						demandRepository.save(demande);
+						userGot.setMonToken(this.getToken(userGot.getEmail(),Long.toString(phone) ));	
+						userGot.setStatus(true);											
+						Utilisateur userUpdate =userRepository.save(userGot);					
+						response.setCode(200);
+						response.setMessage(Utility.CodeAndMessage().get(200));
+						response.setResult(userUpdate);						
+					}
+					else
+					{
+						SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
+						Date dateFormatter = new Date();					
+	                    codeSave.setDate_activation(formatter.format(dateFormatter).toString());	
+	                    codeSave.setStatus(false);
+						codeRepository.save(codeSave); 				
+						userGot.setMonToken(this.getToken(userGot.getEmail(),Long.toString(phone) ));	
+						userGot.setStatus(true);											
+						Utilisateur userUpdate =userRepository.save(userGot);					
+						response.setCode(200);
+						response.setMessage(Utility.CodeAndMessage().get(200));
+						response.setResult(userUpdate);							
+					}					
+					
 				}
 				else
 				{
@@ -383,7 +401,7 @@ public class AccountService implements IAccountService{
 		catch(Exception e)
 		{
 			response.setCode(500);
-			response.setMessage(Utility.CodeAndMessage().get(500));
+		    response.setMessage(Utility.CodeAndMessage().get(500));
 			response.setResult(null);		
 			
 		}
