@@ -66,7 +66,7 @@ public Reponse verifiedAccount( @RequestBody Login  login) {
 }
 @PostMapping(Utility.DO_ACTIVATION)
 public Reponse activation( @RequestBody CodeActivation  code) {	
-	return accountService.activation(code.getPhone(), code.getCode()); 
+	return accountService.activation(code.getCode()); 
 }
 
 

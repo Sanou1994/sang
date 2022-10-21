@@ -3,6 +3,7 @@ package com.connecsen.jereserve.service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import javax.transaction.Transactional;
 
@@ -95,9 +96,17 @@ public class DemandService implements IDemandeService{
 				
 				if(!(user == null))
 				{
-					
+					int valeurCode = new Random().ints(1, 9999).findFirst().getAsInt(); 
+					codeRepository.findByCodeAndStatus(valeurCode,true).stream()
+					.forEach( p-> 
+					{
+					     p.setStatus(false);
+						codeRepository.save(p);	
+					}					
+                    );
+
 					Code codeSave = new Code();
-					codeSave.setCode(new Date().getTime()+user.getPhone());
+					codeSave.setCode(valeurCode);
 					codeSave.setDemandID(demand.getDemandID());
 					codeSave.setPhone(user.getPhone());
 					codeSave.setStatus(true);
@@ -112,8 +121,7 @@ public class DemandService implements IDemandeService{
 	                          "Date: "+demand.getDate_demande()+"\n" + 
 	                          "Veuillez saisir les identifiants ci-dessous pour activer votre demande "+"\n" + 
 	                          "Code :"+codeSave.getCode()+"\n" + 
-	                          "Téléphone :"+userCreated.getPhone()+"\n" + 
-	                          "Lien d'activation : https://je-reserve.net/auth/activation";						
+	                          "Lien d'activation : https://laydoudon.herokuapp.com/#/auth/activation";						
 					OutboundSMSTextMessage outboundSMSTextMessageClient= new OutboundSMSTextMessage(contentMessageClient);
 					OutboundSMSMessageRequest outboundSMSMessageRequestClient = new OutboundSMSMessageRequest("221" + userCreated.getPhone(),outboundSMSTextMessageClient,"221" + userCreated.getPhone(),"LAYDOU"); 
 					SmsMessage smsMessageClient = new SmsMessage(outboundSMSMessageRequestClient);					

@@ -12,7 +12,7 @@ public interface IAccountService {
 	  public String getToken(String username , String password);
 	  public Reponse createOrUpdateUser(Utilisateur user);
 	  public Reponse getUserById(long id);
-	  public Reponse activation(long phone,long code);
+	  public Reponse activation(long code);
 	  public Reponse se_connecter(Login login);
 	  public Utilisateur login_up(Utilisateur user);
 	  public Utilisateur findUserByUsername(String username);

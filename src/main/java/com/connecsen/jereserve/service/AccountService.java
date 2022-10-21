@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import javax.transaction.Transactional;
 
@@ -80,7 +81,7 @@ public class AccountService implements IAccountService{
 			{
 
 				Code codeSave = new Code();
-				codeSave.setCode(new Date().getTime()+user.getPhone());
+				codeSave.setCode(new Random().ints(1, 9999).findFirst().getAsInt());
 				codeSave.setPhone(user.getPhone());
 				codeSave.setStatus(true);
 				codeSave.setUserID(user.getId());
@@ -91,15 +92,13 @@ public class AccountService implements IAccountService{
                         "Téléphone: "+userConnected.getPhone()+"\n" +
                         "Email: "+userConnected.getPhone()+"\n" + 
                         "Veuillez saisir le code  ci-dessous pour vous connectez "+"\n" + 
-                        "Code :"+codeSave.getCode()+"\n" + 
-                        "Téléphone :"+userConnected.getPhone()+"\n" ;
-                   				
+                        "Code :"+codeSave.getCode()+"\n" ;                   				
 				OutboundSMSTextMessage outboundSMSTextMessageClient= new OutboundSMSTextMessage(contentMessageClient);
 				OutboundSMSMessageRequest outboundSMSMessageRequestClient = new OutboundSMSMessageRequest("221" + login.getPhone(),outboundSMSTextMessageClient,"221" + login.getPhone(),"LAYDOU"); 
 				SmsMessage smsMessageClient = new SmsMessage(outboundSMSMessageRequestClient);					
 				Reponse smsReponse =smsService.sendMessage(smsMessageClient);   		
 
-                if(smsReponse.getCode() == 200)
+               if(smsReponse.getCode() == 200)
                 {
     				user.setMonToken(this.getToken(login.getEmail(),Long.toString(login.getPhone()) ));
     				response.setCode(200);
@@ -110,7 +109,7 @@ public class AccountService implements IAccountService{
                 else
                 {
                 	throw new Exception("Error to send sms ");
-                }	
+               }	
 			
 			}
 			else
@@ -331,13 +330,13 @@ public class AccountService implements IAccountService{
 		return response;
 	}
 	@Override
-	public Reponse activation(long phone,long code) {
+	public Reponse activation(long code) {
 		// TODO Auto-generated method stub
 		Reponse response = new Reponse();	
 		try
 	   {
-			Code codeSave=codeRepository.findByPhoneAndCodeAndStatus(phone, code, true);
-			if(codeSave.getCodeID() > 0 )
+			Code codeSave=codeRepository.findByCode(code);
+			if(codeSave.getCodeID() > 0 && codeSave.isStatus() == true )
 			{
 				Utilisateur userGot = userRepository.findById(codeSave.getUserID()).get();
 				
@@ -355,7 +354,7 @@ public class AccountService implements IAccountService{
 						demande.setActivedJob(true);
 						demande.setStatus(true);
 						demandRepository.save(demande);
-						userGot.setMonToken(this.getToken(userGot.getEmail(),Long.toString(phone) ));	
+						userGot.setMonToken(this.getToken(userGot.getEmail(),Long.toString(userGot.getPhone())));	
 						userGot.setStatus(true);											
 						Utilisateur userUpdate =userRepository.save(userGot);					
 						response.setCode(200);
@@ -369,7 +368,7 @@ public class AccountService implements IAccountService{
 	                    codeSave.setDate_activation(formatter.format(dateFormatter).toString());	
 	                    codeSave.setStatus(false);
 						codeRepository.save(codeSave); 				
-						userGot.setMonToken(this.getToken(userGot.getEmail(),Long.toString(phone) ));	
+						userGot.setMonToken(this.getToken(userGot.getEmail(),Long.toString(userGot.getPhone())));	
 						userGot.setStatus(true);											
 						Utilisateur userUpdate =userRepository.save(userGot);					
 						response.setCode(200);
