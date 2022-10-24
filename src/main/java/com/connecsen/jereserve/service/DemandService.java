@@ -121,7 +121,7 @@ public class DemandService implements IDemandeService{
 	                          "Date: "+demand.getDate_demande()+"\n" + 
 	                          "Veuillez saisir les identifiants ci-dessous pour activer votre demande "+"\n" + 
 	                          "Code :"+codeSave.getCode()+"\n" + 
-	                          "Lien d'activation : https://laydoudon.herokuapp.com/#/auth/activation";						
+	                          "Veuillez partir sur votre application mobile pour activer la demande ";						
 					OutboundSMSTextMessage outboundSMSTextMessageClient= new OutboundSMSTextMessage(contentMessageClient);
 					OutboundSMSMessageRequest outboundSMSMessageRequestClient = new OutboundSMSMessageRequest("221" + userCreated.getPhone(),outboundSMSTextMessageClient,"221" + userCreated.getPhone(),"LAYDOU"); 
 					SmsMessage smsMessageClient = new SmsMessage(outboundSMSMessageRequestClient);					

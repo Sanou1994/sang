@@ -48,7 +48,7 @@ private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	// We don't need CSRF for this example
 	httpSecurity.csrf().disable()
 	
-	.authorizeRequests().antMatchers("/users/actived","/*","https://api.orange.com/*","/informations","/demands","/demand","/activation/**","/login").permitAll().
+	.authorizeRequests().antMatchers("/users/actived","https://api.orange.com/*","/informations","/demands","/demand","/activation/**","/login").permitAll().
 
 	// all other requests need to be authenticated
 	anyRequest().authenticated().and().
