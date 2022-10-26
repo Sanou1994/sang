@@ -66,6 +66,7 @@ public class DemandService implements IDemandeService{
 		Reponse response = null;
 		Utilisateur user =null;
 		demande.setDate_demande(formatter.format(date).toString());
+		demande.setDate_demande_numerique(date.getTime());
 		demande.setStatus(false);
 		try
 		{
@@ -128,7 +129,7 @@ public class DemandService implements IDemandeService{
 					Reponse smsReponse =smsService.sendMessage(smsMessageClient); 		
 					response = new Reponse();
 					if(smsReponse.getCode() == 200)
-	                {
+	               {
 						response.setCode(200);
 						response.setMessage(Utility.CodeAndMessage().get(200));
 						response.setResult(demand);
@@ -198,8 +199,16 @@ public class DemandService implements IDemandeService{
 
 	@Override
 	public boolean changerStatusDemande(long id) {
-		// TODO Auto-ngenerated method stub
-		return false;
+		boolean resultat=true;
+		Demande demande = demandRepository.findById(id).get();
+		demande.setStatus(false);
+		Demande demandeUpdate =demandRepository.save(demande);
+		if(demandeUpdate.isStatus())
+		{
+			resultat=false;
+		}	
+		
+		return resultat;
 	}
 
 	@Override
@@ -209,6 +218,7 @@ public class DemandService implements IDemandeService{
 		Demande demand =null;
 		Reponse response  = new Reponse();
 		demande.setDate_demande(formatter.format(date).toString());
+		demande.setDate_demande_numerique(date.getTime());
 		demande.setStatus(true);
 		try
 		{
@@ -422,7 +432,7 @@ public class DemandService implements IDemandeService{
 	                {
 	                	continue;
 
-	                }					
+	                }				
 					
 					
 			}

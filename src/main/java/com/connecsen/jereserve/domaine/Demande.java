@@ -27,6 +27,7 @@ public class Demande {
        private String city ;
        private String typeOfDemand ;
        private String date_demande;
+       private long date_demande_numerique ;
        private String date_debut;
        private String date_fint;
        private String heure_debut;

@@ -13,6 +13,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
+import com.connecsen.jereserve.jobs.JobEnableDemand;
 import com.connecsen.jereserve.jobs.JobSmsAllUsers;
 import com.connecsen.jereserve.service.IAccountService;
 import com.connecsen.jereserve.service.IDemandeService;
@@ -43,7 +44,10 @@ public class JreserveApplication implements CommandLineRunner {
 
 	  @PostConstruct
 	   public void scheduleRunnableWithCronTrigger() {
-	   taskScheduler.scheduleWithFixedDelay(new JobSmsAllUsers(this.iDemandService),5000); }
+	   taskScheduler.scheduleWithFixedDelay(new JobSmsAllUsers(this.iDemandService),5000); 
+	   taskScheduler.scheduleWithFixedDelay(new JobEnableDemand(this.iDemandService),5000); 
+	  
+	  }
 	   
 	 
    
@@ -53,7 +57,9 @@ public class JreserveApplication implements CommandLineRunner {
 	 }
 	 
 	@Override  
-	public void run(String... args) throws Exception {
+	public void run(String... args) throws Exception {	
+	   
+        
 	this.iAccountService.initApp();
 	}
    
