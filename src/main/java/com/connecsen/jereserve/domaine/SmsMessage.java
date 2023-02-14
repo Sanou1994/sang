@@ -1,31 +1,10 @@
 package com.connecsen.jereserve.domaine;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data @AllArgsConstructor
 public class SmsMessage {
- private  OutboundSMSMessageRequest outboundSMSMessageRequest;
- 
- 
-public SmsMessage(OutboundSMSMessageRequest outboundSMSMessageRequest) {
-	this.outboundSMSMessageRequest = outboundSMSMessageRequest;
+	private String phone;
+	private String message;
 }
-
-
-public SmsMessage() {
-	super();
-}
-
-
-public OutboundSMSMessageRequest getOutboundSMSMessageRequest() {
-	return outboundSMSMessageRequest;
-}
-
-
-public void setOutboundSMSMessageRequest(OutboundSMSMessageRequest outboundSMSMessageRequest) {
-	this.outboundSMSMessageRequest = outboundSMSMessageRequest;
-}
-
-
-
-}
-
-
- 

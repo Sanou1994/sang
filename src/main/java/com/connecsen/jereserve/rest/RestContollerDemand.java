@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.connecsen.jereserve.domaine.Demande;
-import com.connecsen.jereserve.domaine.OutboundSMSMessageRequest;
-import com.connecsen.jereserve.domaine.OutboundSMSTextMessage;
 import com.connecsen.jereserve.domaine.PartenaireTempon;
 import com.connecsen.jereserve.domaine.Reponse;
 import com.connecsen.jereserve.domaine.SmsMessage;
@@ -49,9 +47,7 @@ public class RestContollerDemand {
 	@GetMapping(Utility.SMS) 
 	public Reponse sms() throws JsonProcessingException {
 		
-		OutboundSMSTextMessage outboundSMSTextMessageClient= new OutboundSMSTextMessage(" FISRT SMS");
-		OutboundSMSMessageRequest outboundSMSMessageRequestClient = new OutboundSMSMessageRequest("221772490304",outboundSMSTextMessageClient,"221772490304","LAYDOU"); 
-		SmsMessage smsMessageClient = new SmsMessage(outboundSMSMessageRequestClient);	
+			SmsMessage smsMessageClient = new SmsMessage("221772490304"," FISRT SMS");	
 		
 			Reponse demandCreated =smsService.sendMessage(smsMessageClient);
 		return demandCreated;

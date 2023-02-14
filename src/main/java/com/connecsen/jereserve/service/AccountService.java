@@ -21,8 +21,6 @@ import org.springframework.stereotype.Service;
 import com.connecsen.jereserve.domaine.Code;
 import com.connecsen.jereserve.domaine.Demande;
 import com.connecsen.jereserve.domaine.Login;
-import com.connecsen.jereserve.domaine.OutboundSMSMessageRequest;
-import com.connecsen.jereserve.domaine.OutboundSMSTextMessage;
 import com.connecsen.jereserve.domaine.Partenaire;
 import com.connecsen.jereserve.domaine.Reponse;
 import com.connecsen.jereserve.domaine.SmsMessage;
@@ -92,10 +90,8 @@ public class AccountService implements IAccountService{
                         "Téléphone: "+userConnected.getPhone()+"\n" +
                         "Email: "+userConnected.getPhone()+"\n" + 
                         "Veuillez saisir le code  ci-dessous pour vous connectez "+"\n" + 
-                        "Code :"+codeSave.getCode()+"\n" ;                   				
-				OutboundSMSTextMessage outboundSMSTextMessageClient= new OutboundSMSTextMessage(contentMessageClient);
-				OutboundSMSMessageRequest outboundSMSMessageRequestClient = new OutboundSMSMessageRequest("221" + login.getPhone(),outboundSMSTextMessageClient,"221" + login.getPhone(),"LAYDOU"); 
-				SmsMessage smsMessageClient = new SmsMessage(outboundSMSMessageRequestClient);					
+                        "Code :"+codeSave.getCode()+"\n" ;
+				SmsMessage smsMessageClient = new SmsMessage("221" + login.getPhone(),contentMessageClient);					
 				Reponse smsReponse =smsService.sendMessage(smsMessageClient);   		
 
                if(smsReponse.getCode() == 200)
@@ -431,7 +427,7 @@ public class AccountService implements IAccountService{
 	@Override
 	public void initApp() {
 		  
-		Partenaire laydouGot = partenaireRepository.findByPhone(771992610);
+		Partenaire laydouGot = partenaireRepository.findByPhone(775073511);
 		if( laydouGot == null)
 		{
 			    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
@@ -441,12 +437,12 @@ public class AccountService implements IAccountService{
 				laydou.setDate_creation(formatter.format(date).toString());
 				laydou.setEmail("contact@laydou.com");
 				laydou.setName("LAYOU");
-				laydou.setPhone(771992610);
+				laydou.setPhone(775073511);
 				laydou.setStatus(true);
 				Partenaire laydouCreated = partenaireRepository.save(laydou);			    
 				if(laydouCreated.getPartenaireID() > 0)
 				{
-					Utilisateur superAdminLadou = userRepository.findByPhone(771992610);
+					Utilisateur superAdminLadou = userRepository.findByPhone(775073511);
 
 					if(superAdminLadou == null)
 					{
@@ -455,14 +451,14 @@ public class AccountService implements IAccountService{
 						superadmin.setEmail("contact@laydou.com");
 						superadmin.setNom("Laydou");
 						superadmin.setPays("Sénégal");
-						superadmin.setPhone(771992610);
+						superadmin.setPhone(775073511);
 						superadmin.setPrenom("Laydou");
 						superadmin.setStatus(true);
 						superadmin.setIdPartenaire(laydouCreated.getPartenaireID());
-						superadmin.setUsername("contact@laydou.com");
+						superadmin.setUsername("sanouarouna90@gmail.com");
 						superadmin.setRole("SUPERADMIN");
 						superadmin.setVille("Dakar");	
-						superadmin.setPassword(bCryptPasswordEncoder.encode(Long.toString(771992610)));
+						superadmin.setPassword(bCryptPasswordEncoder.encode(Long.toString(775073511)));
 						Utilisateur superadminCreated = userRepository.save(superadmin);
 						laydouCreated.getUtilisateurs().add(superadminCreated);						
 						partenaireRepository.save(laydouCreated);												

@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.connecsen.jereserve.domaine.Code;
 import com.connecsen.jereserve.domaine.Demande;
-import com.connecsen.jereserve.domaine.OutboundSMSMessageRequest;
-import com.connecsen.jereserve.domaine.OutboundSMSTextMessage;
 import com.connecsen.jereserve.domaine.Partenaire;
 import com.connecsen.jereserve.domaine.PartenaireTempon;
 import com.connecsen.jereserve.domaine.Reponse;
@@ -123,9 +121,7 @@ public class DemandService implements IDemandeService{
 	                          "Veuillez saisir les identifiants ci-dessous pour activer votre demande "+"\n" + 
 	                          "Code :"+codeSave.getCode()+"\n" + 
 	                          "Veuillez partir sur votre application mobile pour activer la demande ";						
-					OutboundSMSTextMessage outboundSMSTextMessageClient= new OutboundSMSTextMessage(contentMessageClient);
-					OutboundSMSMessageRequest outboundSMSMessageRequestClient = new OutboundSMSMessageRequest("221" + userCreated.getPhone(),outboundSMSTextMessageClient,"221" + userCreated.getPhone(),"LAYDOU"); 
-					SmsMessage smsMessageClient = new SmsMessage(outboundSMSMessageRequestClient);					
+						SmsMessage smsMessageClient = new SmsMessage("221" + userCreated.getPhone(),contentMessageClient);					
 					Reponse smsReponse =smsService.sendMessage(smsMessageClient); 		
 					response = new Reponse();
 					if(smsReponse.getCode() == 200)
@@ -350,13 +346,9 @@ public class DemandService implements IDemandeService{
 				                          "SAUVER UNE VIE EST MERVEILLEUX.DONNEZ DU SANG,DONNEZ LA VIE!\n";									
 								    break;
 							  
-							}
+							}							
 							
-							
-							
-							OutboundSMSTextMessage outboundSMSTextMessageClient= new OutboundSMSTextMessage(contentMessageClient);
-							OutboundSMSMessageRequest outboundSMSMessageRequestClient = new OutboundSMSMessageRequest("221" + userGot.getPhone(),outboundSMSTextMessageClient,"221" + userGot.getPhone(),"LAYDOU"); 
-							SmsMessage smsMessageClient = new SmsMessage(outboundSMSMessageRequestClient);					
+							SmsMessage smsMessageClient = new SmsMessage("221" + userGot.getPhone(),contentMessageClient);					
 							Reponse smsReponse =smsService.sendMessage(smsMessageClient); 	
 
 							if(smsReponse.getCode() == 200)
@@ -417,10 +409,7 @@ public class DemandService implements IDemandeService{
 		                          "J'aimerais donner mon sang mon groupe sanguin est  : "+demand.getGroupeSanguin()+"\n" + 
 		                          "Je suis joinganble sur le "+demand.getPhone()+"\n\n" + 
 		                          "Merci de recevoir ma demande !\n";											
-			
-				    OutboundSMSTextMessage outboundSMSTextMessageClient= new OutboundSMSTextMessage(contentMessageClient);
-					OutboundSMSMessageRequest outboundSMSMessageRequestClient = new OutboundSMSMessageRequest("221" + partenaireGot.getPhone(),outboundSMSTextMessageClient,"221" + partenaireGot.getPhone(),"LAYDOU"); 
-					SmsMessage smsMessageClient = new SmsMessage(outboundSMSMessageRequestClient);					
+			    	SmsMessage smsMessageClient = new SmsMessage("221" + partenaireGot.getPhone(),contentMessageClient);					
 					Reponse smsReponse =smsService.sendMessage(smsMessageClient);
 
 					if(smsReponse.getCode() == 200)

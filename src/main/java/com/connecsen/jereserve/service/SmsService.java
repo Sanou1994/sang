@@ -1,79 +1,130 @@
 package com.connecsen.jereserve.service;
 
-import java.util.Arrays;
+import java.net.URL;
+import java.net.URLEncoder;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import javax.net.ssl.HttpsURLConnection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.connecsen.jereserve.domaine.Reponse;
 import com.connecsen.jereserve.domaine.SmsMessage;
-import com.connecsen.jereserve.utils.Utility;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 
+import sun.misc.BASE64Encoder;
 @Service
 public class SmsService {
 
-	    static final String  clientId="Ux8BPAk4wnXN0leW4a92iVHXeDl9ZXAf";
-	    static final String clientSecret="X0ikbHQaZQProhhB";
-	    static final String urlBase="https://api.orange.com/";
-	    static final String urlToken="https://api.orange.com/oauth/v3/token";
+	static final String  subject="Ux8BPAk4wnXN0leW4a92iVHXeDl9ZXAf";
+	static final String key="X0ikbHQaZQProhhB";
+	static final String signature="https://api.orange.com/";
+	static final String token="c5f51a8b487e9eaa757b1328c83d5fdd";
 
-	    @Autowired
-	    RestTemplate restTemplate;
-   
-public Reponse sendMessage(SmsMessage smsMessage)  {
+	@Autowired
+	RestTemplate restTemplate;
+
+	public Reponse sendMessage(SmsMessage smsMessage)
+	{
+		String link= "https://api.orangesmspro.sn:8443/api";
+		String key_private="5870f13a61767057d15ff6b390b19841";
+		String token="c5f51a8b487e9eaa757b1328c83d5fdd";
+		String login = "laydu";
+		String subject="SMS-DON-DE-SANG";
+		String signature="dondesang";
+		String recipient=smsMessage.getPhone();
+		String content=smsMessage.getMessage();
+		String password = token;
+		String authString = login + ":" + password;
+		String authStringEnc = new BASE64Encoder().encode(authString.getBytes());
 		Reponse reponse = new Reponse();
-		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-		String json;
-		try {
-			json = ow.writeValueAsString(smsMessage);
-			String apiUrl =urlBase+"smsmessaging/v1/outbound/"+smsMessage.getOutboundSMSMessageRequest().getAddress()+"/requests";
-			HttpHeaders headers = new HttpHeaders();
-			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-	        headers.setContentType(MediaType.APPLICATION_JSON);
-	        headers.set("Authorization","Bearer "+getTokenOrangeSms());
-
-			HttpEntity<String> request = new HttpEntity<String>(json,headers);
-			ResponseEntity<String> responseEntity =new RestTemplate().exchange(apiUrl, HttpMethod.POST, request, String.class);
-			if(responseEntity.getStatusCodeValue() == 201)
-		    {
-		    	reponse.setCode(200);
-		    	reponse.setMessage(Utility.CodeAndMessage().get(200));
-		    	reponse.setResult(true);		    	
-		    }
-		    else
-		    {
-		    	reponse.setCode(500);
-		    	reponse.setMessage(Utility.CodeAndMessage().get(400));
-		    	reponse.setResult(false);		
-		    }
+		try
+		{
+			content=URLEncoder.encode(content, "UTF8");
+			subject=URLEncoder.encode(subject, "UTF8");
+			signature=URLEncoder.encode(signature, "UTF8");
+			long timestamp = System.currentTimeMillis()/1000;
+			String msgToEncrypt=token+subject+signature+recipient+content+timestamp;
+			String key=hmacSha(key_private, msgToEncrypt);
+			System.setProperty("javax.net.ssl.trustStore", "clienttrust");
+			//download, extract and paste clienttrust file in the project
+			//link https://www.orangesmspro.sn/app/alertsms/user/clienttrust.php
+			String url=	link+"?token="+token+"&subject="+subject+"&signature="+signature+"&recipient="+recipient+"&content="
+							+content+"&timestamp="+timestamp+"&key="+key;
+			URL obj = new URL(url);
+			HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+			con.setRequestProperty("Authorization", "Basic " + authStringEnc);
+			int responseCode = con.getResponseCode();
 			
-		} catch (JsonProcessingException e) {
-			reponse.setCode(500);
-	    	reponse.setMessage(Utility.CodeAndMessage().get(500));
-	    	reponse.setResult(e.getMessage());
+			if (responseCode == 200)
+			{
+				
+				reponse.setCode(200);
+				reponse.setMessage(" Le message a été envoyé !");
+				reponse.setResult(true);	
+				
+			}
+			else
+			{
+				
+				reponse.setCode(201);
+				reponse.setMessage(" Echec d'envoi de  message !");
+				reponse.setResult(false);			
+				    
+			}
+			
+			
 		}
-		    return reponse;
+		
+		catch(Exception e)
+		{
+			reponse.setCode(500);
+			reponse.setMessage(" Echec d'envoi de  message du a un problème interne !");
+			reponse.setResult(false);			
 
+		}
+		
+		return reponse;
 	}
 
-  public String getTokenOrangeSms() { MultiValueMap<String, String>
-  parametersMap = new LinkedMultiValueMap<String, String>();
-  parametersMap.add("grant_type", "client_credentials");
-  parametersMap.add("client_id",clientId);
-  parametersMap.add("client_secret",clientSecret);
-  parametersMap.add("audience",urlToken);
-  DefaultOAuth2AccessToken token = ( new RestTemplate()).postForObject(urlToken, parametersMap, DefaultOAuth2AccessToken.class);
-  return token.getValue(); } }
- 
+
+
+
+
+	
+	
+
+
+
+	public static String hmacSha(String SECRETKEY, String VALUE) 
+	{
+
+		try {
+			SecretKeySpec signingKey = new SecretKeySpec(SECRETKEY.getBytes("UTF-8"), "HmacSHA1");
+			Mac mac = Mac.getInstance("HmacSHA1");
+			mac.init(signingKey);
+			byte[] rawHmac = mac.doFinal(VALUE.getBytes("UTF-8"));
+			byte[] hexArray = {
+					(byte)'0', (byte)'1', (byte)'2', (byte)'3',
+					(byte)'4', (byte)'5', (byte)'6', (byte)'7',
+					(byte)'8', (byte)'9', (byte)'a', (byte)'b',
+					(byte)'c', (byte)'d', (byte)'e', (byte)'f'
+			};
+			byte[] hexChars = new byte[rawHmac.length * 2];
+			for ( int j = 0; j < rawHmac.length; j++ ) {
+				int v = rawHmac[j] & 0xFF;
+				hexChars[j * 2] = hexArray[v >>> 4];
+				hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+			}
+			return new String(hexChars);
+		}
+		catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+	} 
+
+
+}
+
