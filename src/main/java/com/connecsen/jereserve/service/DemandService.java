@@ -324,27 +324,27 @@ public class DemandService implements IDemandeService{
 							Utilisateur userGot=users.get(j);
 							switch(demand.getTypeOfDemand()) {
 							  case "RECEVEUR":
-								  contentMessageClient="Bonjour Monsieur/Madame:"+userGot.getNom()+"\n\n" + 
-				                          "J'espère que vous vous portez bien ? \n" + 
-				                          "SAUVE-MOI ! , j'ai besoin en URGENCE DE SANG : "+demand.getGroupeSanguin()+" à "+demand.getNameOfCenter()+"\n" + 
-				                          "Votre contribution me permettra d'espérer améliorer ma santé."+"\n" +
-				                          "Je suis joinganble sur le "+demand.getPhone()+"\n\n" + 
-				                          "SAUVER UNE VIE EST MERVEILLEUX.DONNEZ DU SANG,DONNEZ LA VIE!\n";														
+								  String pronom=(demand.getSexe().equals("F"))? "Elle " : "Il";
+								  contentMessageClient="Besoin du sang en urgence \n\n" +
+										  pronom +" est admis(e) à l’hôpital "+demand.getName_of_structure()+",\n" +
+										  pronom +" a "+demand.getAge()+" ans et "+pronom+" a besoin d’une transfusion du groupe "+demand.getGroupeSanguin()+"\n" +
+										  "Sauvez le/la en contactant au plus vite au " +demand.getPhone()+"\n" +"Votre don peut sauver une vie !!!\n\n" ;				 
+										  							  
+								  														
 							    break;
 							    
 							    
 							    
 							  case "COLLECTE":
-								  contentMessageClient="Bonjour Monsieur/Madame:"+userGot.getNom()+"\n\n" + 
-				                          "J'espère que vous vous portez bien ? \n" + 
-				                          "Nous vous informons que la structure "+demand.getName_of_structure()+" organise une activité de collecte de sang \n" + 
-				                          "Votre participation , nous permettra, ensemble de sauver des vies .\n" +
-				                          "Ci-dessous les informations supplémentaires : \n" + 
-				                          "Contact :"+demand.getPhone()+" \n" + 
-				                          "Date  : "+demand.getDate_debut()+" \t-\t "+demand.getDate_fint()+"\n" + 
-				                          "Heure   :"+demand.getHeure_debut()+" \t-\t "+demand.getHeure_fin()+" \n" +
-				                          "SAUVER UNE VIE EST MERVEILLEUX.DONNEZ DU SANG,DONNEZ LA VIE!\n";									
-								    break;
+								  contentMessageClient="APPEL À UN DON DE SANG \n\n" +
+										  "Petite piqure pour grands effets. Une collecte de sang est organisée\n" +
+										  "par "+demand.getName_of_structure()+"\n" +
+										  "du " +demand.getDate_debut()+" \t-\t "+demand.getDate_fint()+"\n" +
+										  "de "+demand.getHeure_debut()+" \t-\t "+demand.getHeure_fin()+" \n" + 
+										  "à "+demand.getNameOfCenter()+"\n" +	
+										  "Contacter-nous au " +demand.getPhone()+" \n" +
+										  "Votre don peut sauver une vie !!!\n\n" ;
+				                          break;
 							  
 							}							
 							

@@ -23,8 +23,6 @@ import com.connecsen.jereserve.service.IDemandeService;
 @SpringBootApplication
 public class JreserveApplication implements CommandLineRunner {
 	@Autowired
-	com.connecsen.jereserve.service.SmsService SmsService;
-	@Autowired
 	RestTemplate restTemplate;
 	 @Autowired
      private ThreadPoolTaskScheduler taskScheduler;
@@ -61,6 +59,7 @@ public class JreserveApplication implements CommandLineRunner {
 	@Override  
 	public void run(String... args) throws Exception {	
 		this.iAccountService.initApp();
+		 
 	}
    
 }

@@ -4,7 +4,6 @@ com\connecsen\jereserve\security\JwtTokenUtil.class
 com\connecsen\jereserve\security\WebSecurityConfig.class
 com\connecsen\jereserve\domaine\Code.class
 com\connecsen\jereserve\sendgrid\config\SendGridConfig.class
-com\connecsen\jereserve\domaine\OutboundSMSMessageRequest.class
 com\connecsen\jereserve\exception\nofoundexception\MultimediaNotFoundException.class
 com\connecsen\jereserve\jobs\ThreadPoolTaskSchedulerConfig.class
 com\connecsen\jereserve\exception\createexception\CreateMultimediaException.class
@@ -41,7 +40,6 @@ com\connecsen\jereserve\rest\RestContollerDemand.class
 com\connecsen\jereserve\exception\deleteexception\MultimediaDeletedException.class
 com\connecsen\jereserve\service\InformationService.class
 com\connecsen\jereserve\rest\RestControllerAccount.class
-com\connecsen\jereserve\domaine\OutboundSMSTextMessage.class
 com\connecsen\jereserve\service\PartenaireService.class
 com\connecsen\jereserve\exception\nofoundexception\ReservationNotFoundException.class
 com\connecsen\jereserve\exception\deleteexception\UserDeletedException.class
@@ -49,6 +47,7 @@ com\connecsen\jereserve\repository\CodeRepository.class
 com\connecsen\jereserve\utils\Utility.class
 com\connecsen\jereserve\domaine\Partenaire.class
 com\connecsen\jereserve\repository\DemandeRepository.class
+com\connecsen\jereserve\jobs\JobEnableDemand.class
 com\connecsen\jereserve\domaine\GlobalEnum.class
 com\connecsen\jereserve\exception\createexception\CreateException.class
 com\connecsen\jereserve\rest\RestControllerPartenaire.class

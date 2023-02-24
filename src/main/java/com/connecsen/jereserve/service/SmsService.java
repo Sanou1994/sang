@@ -2,6 +2,7 @@ package com.connecsen.jereserve.service;
 
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Base64;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -14,7 +15,6 @@ import org.springframework.web.client.RestTemplate;
 import com.connecsen.jereserve.domaine.Reponse;
 import com.connecsen.jereserve.domaine.SmsMessage;
 
-import sun.misc.BASE64Encoder;
 @Service
 public class SmsService {
 
@@ -37,8 +37,8 @@ public class SmsService {
 		String recipient=smsMessage.getPhone();
 		String content=smsMessage.getMessage();
 		String password = token;
-		String authString = login + ":" + password;
-		String authStringEnc = new BASE64Encoder().encode(authString.getBytes());
+		String authString = login + ":" + password;		
+		String authStringEnc =Base64.getEncoder().encodeToString(authString.getBytes());
 		Reponse reponse = new Reponse();
 		try
 		{

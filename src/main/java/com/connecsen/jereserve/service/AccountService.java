@@ -54,7 +54,10 @@ public class AccountService implements IAccountService{
     private SmsService smsService;
     
 	@Override
-	public Utilisateur login_up(Utilisateur user) {
+	public Utilisateur login_up(Utilisateur user)
+	
+	
+	{
 		Utilisateur userGot = userRepository.findByPhone(user.getPhone());
 		if(userGot == null) {
 			String pwdCryp = bCryptPasswordEncoder.encode(user.getPassword());
@@ -74,7 +77,7 @@ public class AccountService implements IAccountService{
 		Utilisateur userConnected =null;
 		try
 		{
-			Utilisateur user = userRepository.findByEmailAndPhone(login.getEmail(),login.getPhone());
+			Utilisateur user = userRepository.findByPhone(login.getPhone());
 			if((user != null)&&(user.isStatus())&&(bCryptPasswordEncoder.matches(Long.toString(login.getPhone()), user.getPassword())))
 			{
 
@@ -88,7 +91,7 @@ public class AccountService implements IAccountService{
 				userConnected =userRepository.save(user);
 				String contentMessageClient=" Bonjour Monsieur/Madame:"+userConnected.getNom()+"\n" + 
                         "Téléphone: "+userConnected.getPhone()+"\n" +
-                        "Email: "+userConnected.getPhone()+"\n" + 
+                        "Email: "+userConnected.getEmail()+"\n" + 
                         "Veuillez saisir le code  ci-dessous pour vous connectez "+"\n" + 
                         "Code :"+codeSave.getCode()+"\n" ;
 				SmsMessage smsMessageClient = new SmsMessage("221" + login.getPhone(),contentMessageClient);					
@@ -96,7 +99,7 @@ public class AccountService implements IAccountService{
 
                if(smsReponse.getCode() == 200)
                {
-    				user.setMonToken(this.getToken(login.getEmail(),Long.toString(login.getPhone()) ));
+    				user.setMonToken(this.getToken(user.getEmail(),Long.toString(login.getPhone()) ));
     				response.setCode(200);
     				response.setMessage(Utility.CodeAndMessage().get(200));
     				response.setResult(userConnected);		
@@ -104,7 +107,7 @@ public class AccountService implements IAccountService{
                 }
                 else
                 {
-                	throw new Exception("Error to send sms ");
+                 	throw new Exception("Error to send sms ");
                }	
 			
 			}
@@ -437,28 +440,28 @@ public class AccountService implements IAccountService{
 				laydou.setDate_creation(formatter.format(date).toString());
 				laydou.setEmail("contact@laydou.com");
 				laydou.setName("LAYOU");
-				laydou.setPhone(775073511);
+				laydou.setPhone(771992610);
 				laydou.setStatus(true);
 				Partenaire laydouCreated = partenaireRepository.save(laydou);			    
 				if(laydouCreated.getPartenaireID() > 0)
 				{
-					Utilisateur superAdminLadou = userRepository.findByPhone(775073511);
+					Utilisateur superAdminLadou = userRepository.findByPhone(771992610);
 
 					if(superAdminLadou == null)
 					{
 						Utilisateur superadmin =  new Utilisateur(); 
 						superadmin.setAdresse("Dakar");
 						superadmin.setEmail("contact@laydou.com");
-						superadmin.setNom("Laydou");
+						superadmin.setNom("LAYOU");
 						superadmin.setPays("Sénégal");
-						superadmin.setPhone(775073511);
-						superadmin.setPrenom("Laydou");
+						superadmin.setPhone(771992610);
+						superadmin.setPrenom("LAYOU");
 						superadmin.setStatus(true);
 						superadmin.setIdPartenaire(laydouCreated.getPartenaireID());
-						superadmin.setUsername("sanouarouna90@gmail.com");
+						superadmin.setUsername("contact@laydou.com");
 						superadmin.setRole("SUPERADMIN");
 						superadmin.setVille("Dakar");	
-						superadmin.setPassword(bCryptPasswordEncoder.encode(Long.toString(775073511)));
+						superadmin.setPassword(bCryptPasswordEncoder.encode(Long.toString(771992610)));
 						Utilisateur superadminCreated = userRepository.save(superadmin);
 						laydouCreated.getUtilisateurs().add(superadminCreated);						
 						partenaireRepository.save(laydouCreated);												

@@ -23,6 +23,9 @@ public class Demande {
        private String email ;
        private String nameOfCenter ;
        private String adress ;
+       private String sexe ;
+       private long age ;
+       private String heardquarter ;
        private String country ;
        private String city ;
        private String typeOfDemand ;
